@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Play, ChevronRight, User, Lock, Mail } from 'lucide-react'
+//import { Play, ChevronRight, User, Lock, Mail } from 'lucide-react'
+import { Play, ChevronRight, User, Mail } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { useRouter } from 'next/navigation'
 
