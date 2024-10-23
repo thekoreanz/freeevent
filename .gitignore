@@ -1,1 +1,22 @@
-.next
+# Dependencias de Node
+node_modules/
+
+# Compilación de Next.js
+.next/
+
+# Archivos de bloqueo
+package-lock.json
+yarn.lock
+
+# Archivos de entorno
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de configuración de editor
+.idea/
+.vscode/
+
+# Otros
+dist/

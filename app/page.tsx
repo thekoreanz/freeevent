@@ -59,23 +59,50 @@ export default function Home() {
     }
 };
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const response = await fetch('http://79.152.199.63/register.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `username=${username}&email=${email}&password=${password}`,
-    });
-    const data = await response.json();
-    if (data.success) {
-      setShowRegister(false);
-      setShowLogin(true);
-    } else {
-      alert(data.message);
-    }
-  };
+const handleRegister = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  const formData = new URLSearchParams();
+  formData.append('username', username);
+  formData.append('email', email);
+  formData.append('password', password);
+
+  const response = await fetch('/api/proxy', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: formData.toString(),
+  });
+
+  const data = await response.json();
+  if (data.success) {
+    setShowRegister(false);
+    setShowLogin(true);
+  } else {
+    alert(data.message);
+  }
+};
+
+
+
+  //const handleRegister = async (e: React.FormEvent) => {
+    //e.preventDefault();
+    //const response = await fetch('/api/proxy', {
+      //method: 'POST',
+      //headers: {
+        //'Content-Type': 'application/x-www-form-urlencoded',
+      //},
+      //body: `username=${username}&email=${email}&password=${password}`,
+    //});
+    //const data = await response.json();
+    //if (data.success) {
+      //setShowRegister(false);
+      //setShowLogin(true);
+    //} else {
+     // alert(data.message);
+    //}
+  //};
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-white bg-black overflow-hidden">
