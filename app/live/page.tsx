@@ -1,92 +1,82 @@
-"use client"; // Asegúrate de que el componente se renderice del lado del cliente
+'use client'
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-const LivePage = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const router = useRouter();
+export default function LivePage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      showLoginPrompt();
-    }, 2000); // Espera 2 segundos antes de mostrar el prompt
-
-    return () => clearTimeout(timer); // Limpiar el timeout si el componente se desmonta
-  }, []);
+    const timer = setTimeout(showLoginPrompt, 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
   const showLoginPrompt = () => {
-    const user = prompt("Por favor, ingresa tu usuario:");
-    const pass = prompt("Por favor, ingresa tu contraseña:");
+    const user = prompt("Por favor, ingresa tu usuario:")
+    const pass = prompt("Por favor, ingresa tu contraseña:")
 
     if (user && pass) {
-      login(user, pass);
+      login(user, pass)
     } else {
-      router.push('/'); // Redirigir al inicio si no se ingresan datos
+      router.push('/')
     }
-  };
+  }
 
   const login = async (user: string, pass: string) => {
-    const formData = new URLSearchParams();
-    formData.append('username', user);
-    formData.append('password', pass);
+    setIsLoading(true)
+    try {
+      const formData = new URLSearchParams()
+      formData.append('username', user)
+      formData.append('password', pass)
 
-    const response = await fetch('http://79.152.199.63/login.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    });
+      const response = await fetch('http://79.152.199.63/login.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
+      })
 
-    const data = await response.json();
-    if (data.success) {
-      setIsAuthenticated(true); // Actualiza el estado a autenticado
-    } else {
-      alert(data.message || "Credenciales incorrectas."); // Mensaje de error
-      router.push('/'); // Redirigir al inicio si las credenciales son incorrectas
+      const data = await response.json()
+      if (data.success) {
+        setIsAuthenticated(true)
+      } else {
+        alert(data.message || "Credenciales incorrectas.")
+        router.push('/')
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      alert("Error al iniciar sesión. Por favor, intente de nuevo.")
+      router.push('/')
+    } finally {
+      setIsLoading(false)
     }
-  };
-  
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="text-2xl font-bold text-gray-700">Verificando...</div>
+      </div>
+    )
+  }
 
   return (
-    <div style={styles.container}>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       {isAuthenticated ? (
         <>
-          <h1 style={styles.title}>Bienvenido a LIVESPORTS!</h1>
+          <h1 className="mb-6 text-3xl font-bold text-gray-800">Bienvenido a LIVESPORTS!</h1>
           <iframe
             src="https://v4-crackstreams.pages.dev/"
-            frameBorder="0"
-            width="1000"
-            height="1000"
-            style={styles.iframe}
+            className="w-full max-w-4xl h-[80vh] border-none shadow-lg rounded-lg"
+            title="LIVESPORTS Stream"
           />
         </>
       ) : (
-        <h1 style={styles.title}>Verificando...</h1>
+        <div className="text-2xl font-bold text-red-600">Acceso denegado. Por favor, inicie sesión.</div>
       )}
     </div>
-  );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column' as 'column' | 'row', // Usa valores específicos
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    backgroundColor: '#f0f0f0',
-    textAlign: 'center',
-  },
-  title: {
-    marginBottom: '20px',
-    color: '#333',
-  },
-  iframe: {
-    border: 'none',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-  },
-};
-
-export default LivePage;
+  )
+}
