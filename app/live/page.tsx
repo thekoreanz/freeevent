@@ -31,7 +31,7 @@ const LivePage = () => {
     formData.append('username', user);
     formData.append('password', pass);
 
-    const response = await fetch('http://localhost:8080/login.php', {
+    const response = await fetch('http://79.152.199.63/login.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -47,6 +47,7 @@ const LivePage = () => {
       router.push('/'); // Redirigir al inicio si las credenciales son incorrectas
     }
   };
+  
 
   return (
     <div style={styles.container}>
@@ -71,20 +72,20 @@ const LivePage = () => {
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column' as 'column' | 'row', // Usa valores específicos
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh', // Ocupa toda la altura de la ventana
-    backgroundColor: '#f0f0f0', // Color de fondo claro
-    textAlign: 'center', // Centrar texto
+    height: '100vh',
+    backgroundColor: '#f0f0f0',
+    textAlign: 'center',
   },
   title: {
-    marginBottom: '20px', // Espacio debajo del título
-    color: '#333', // Color del texto
+    marginBottom: '20px',
+    color: '#333',
   },
   iframe: {
-    border: 'none', // Sin borde
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Sombra para el iframe
+    border: 'none',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   },
 };
 
