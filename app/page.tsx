@@ -35,29 +35,54 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const formData = new URLSearchParams();
+    formData.append('action', 'login'); // Añadir el tipo de acción
     formData.append('username', username);
     formData.append('password', password);
-
-    const response = await fetch('http://79.152.199.63/login.php', {
+  
+    const response = await fetch('/api/proxy', { // Cambiar a la API de proxy
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: formData.toString(),
     });
-
+  
     const result = await response.json();
     if (result.success) {
-        router.push('/live'); // Redirigir al usuario a la página 'live' en caso de login exitoso
+      router.push('/live'); // Redirigir al usuario a la página 'live' en caso de login exitoso
     } else {
-        // Manejar error de login
-        console.error(result.message);
+      console.error(result.message);
     }
-};
+  };
+
+  //const handleLogin = async (e: React.FormEvent) => {
+    //e.preventDefault();
+
+    //const formData = new URLSearchParams();
+    //formData.append('username', username);
+    //formData.append('password', password);
+
+    //const response = await fetch('http://79.152.199.63/login.php', {
+      //method: 'POST',
+      //headers: {
+        //'Content-Type': 'application/x-www-form-urlencoded',
+      //},
+      //body: formData.toString(),
+    //});
+
+    //const result = await response.json();
+    //if (result.success) {
+      //  router.push('/live'); // Redirigir al usuario a la página 'live' en caso de login exitoso
+    //} else {
+        // Manejar error de login
+      //  console.error(result.message);
+    //}
+//};
 
 const handleRegister = async (e: React.FormEvent) => {
   e.preventDefault();
