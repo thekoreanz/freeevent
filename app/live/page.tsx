@@ -9,33 +9,30 @@ export default function LivePage() {
   const router = useRouter()
 
   useEffect(() => {
-    const timer = setTimeout(showLoginPrompt, 2000)
+    // Realizar la autenticación después de un breve tiempo de carga
+    const timer = setTimeout(() => {
+      const user = prompt("Por favor, ingresa tu usuario:")
+      const pass = prompt("Por favor, ingresa tu contraseña:")
+      if (user && pass) {
+        login(user, pass)
+      } else {
+        router.push('/')
+      }
+    }, 2000)
     return () => clearTimeout(timer)
   }, [])
-
-  const showLoginPrompt = () => {
-    const user = prompt("Por favor, ingresa tu usuario:")
-    const pass = prompt("Por favor, ingresa tu contraseña:")
-
-    if (user && pass) {
-      login(user, pass)
-    } else {
-      router.push('/')
-    }
-  }
 
   const login = async (user: string, pass: string) => {
     setIsLoading(true)
     try {
       const formData = new URLSearchParams()
+      formData.append('action', 'login')
       formData.append('username', user)
       formData.append('password', pass)
 
-      const response = await fetch('http://79.152.199.63/login.php', {
+      const response = await fetch('/api/proxy', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: formData.toString(),
       })
 
@@ -47,7 +44,7 @@ export default function LivePage() {
         router.push('/')
       }
     } catch (error) {
-      console.error('Login error:', error)
+      console.error('Error de inicio de sesión:', error)
       alert("Error al iniciar sesión. Por favor, intente de nuevo.")
       router.push('/')
     } finally {

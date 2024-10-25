@@ -10,11 +10,11 @@ import { useRouter } from 'next/navigation'
 
 
 const events = [
-  { id: 1, title: "UFC 308", image: "https://mmajunkie.usatoday.com/wp-content/uploads/sites/91/2024/10/UFC-308-How-to-Watch-Thumb.jpg?w=1000&h=600&crop=1", date: "10 Jun 2024" },
-  { id: 2, title: "Barça vs Madrid", image: "https://media.rpctv.com/p/dce0415e608a9f53df2851832d95fcef/adjuntos/314/imagenes/018/733/0018733401/855x0/smart/whatsapp-image-2024-09-24-at-112853-am-1jpeg.jpeg", date: "15 Jul 2024" },
+  { id: 1, title: "UFC 308", image: "https://mmajunkie.usatoday.com/wp-content/uploads/sites/91/2024/10/UFC-308-How-to-Watch-Thumb.jpg?w=1000&h=600&crop=1", date: "" },
+  { id: 2, title: "Barça vs Madrid", image: "https://media.rpctv.com/p/dce0415e608a9f53df2851832d95fcef/adjuntos/314/imagenes/018/733/0018733401/855x0/smart/whatsapp-image-2024-09-24-at-112853-am-1jpeg.jpeg" },
   { id: 3, title: "Topuria vs Holloway", image: "https://mmajunkie.usatoday.com/wp-content/uploads/sites/91/2024/10/UFC-308-How-to-Watch-Thumb.jpg?w=1000&h=600&crop=1" },
-  { id: 4, title: "LaLiga Hypermotion", image: "https://image.discovery.indazn.com/eu/v3/eu/none/1f3zmlzr4pamc1jnkm6bjh64of_image-header_pEs_1704473541000/fill/center/top/none/85/448/258/webp/image", date: "5 Sep 2024" },
-  { id: 5, title: "UEFA CHAMPIONS LEAGUE", image: "https://s3.amazonaws.com/rtvc-assets-senalcolombia.gov.co/s3fs-public/styles/imagen_noticia/public/field/image/formato-uefa-champions-league-2024.JPG?itok=xiE6q7dG", date: "18 Oct 2024" },
+  { id: 4, title: "LaLiga Hypermotion", image: "https://image.discovery.indazn.com/eu/v3/eu/none/1f3zmlzr4pamc1jnkm6bjh64of_image-header_pEs_1704473541000/fill/center/top/none/85/448/258/webp/image", date: "" },
+  { id: 5, title: "UEFA CHAMPIONS LEAGUE", image: "https://s3.amazonaws.com/rtvc-assets-senalcolombia.gov.co/s3fs-public/styles/imagen_noticia/public/field/image/formato-uefa-champions-league-2024.JPG?itok=xiE6q7dG", date: "" },
 ];
 
 export default function Home() {
@@ -38,13 +38,13 @@ export default function Home() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+    
     const formData = new URLSearchParams();
-    formData.append('action', 'login'); // Añadir el tipo de acción
+    formData.append('action', 'login');  // Acción de login
     formData.append('username', username);
     formData.append('password', password);
   
-    const response = await fetch('/api/proxy', { // Cambiar a la API de proxy
+    const response = await fetch('/api/proxy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -59,7 +59,7 @@ export default function Home() {
       console.error(result.message);
     }
   };
-
+  
   //const handleLogin = async (e: React.FormEvent) => {
     //e.preventDefault();
 
@@ -88,6 +88,7 @@ const handleRegister = async (e: React.FormEvent) => {
   e.preventDefault();
   
   const formData = new URLSearchParams();
+  formData.append('action', 'register');  // Acción de registro
   formData.append('username', username);
   formData.append('email', email);
   formData.append('password', password);
@@ -108,7 +109,6 @@ const handleRegister = async (e: React.FormEvent) => {
     alert(data.message);
   }
 };
-
 
 
   //const handleRegister = async (e: React.FormEvent) => {
